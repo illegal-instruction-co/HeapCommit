@@ -1,35 +1,24 @@
-cmake_minimum_required(VERSION 3.20)
-project(HeapCommit CXX)
+cmake_minimum_required(VERSION 3.12)
+project(heapcommit)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if(MSVC)
-	add_compile_options(/W4 /WX /permissive- /utf-8)
-	add_compile_options(/we4242 /we4244 /we4287 /we4355 /we4365 /we4800)
-else()
-	add_compile_options(-Wall -Wextra -Werror)
-	add_compile_options(-Wconversion -Wsign-conversion -Wold-style-cast)
-	add_compile_options(-Wswitch-enum -Wshadow -Wnull-dereference)
-endif()
+add_library(${PROJECT_NAME}_lib STATIC
+	src/HeapCommit.cpp
+)
 
-add_subdirectory(src)
+target_include_directories(${PROJECT_NAME}_lib PUBLIC include)
+target_link_libraries(${PROJECT_NAME}_lib PUBLIC ntdll)
 
-find_program(CLANG_FORMAT clang-format)
-if(CLANG_FORMAT)
-	add_custom_target(
-		format
-		COMMAND ${CLANG_FORMAT} -i -style=file
-			include/*.hpp
-			src/*.cpp src/*.hpp
-		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	)
-	add_custom_target(
-		format-check
-		COMMAND ${CLANG_FORMAT} --dry-run -Werror -style=file
-			include/*.hpp
-			src/*.cpp src/*.hpp
-		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	)
-endif()
+add_executable(${PROJECT_NAME}_demo
+	src/Main.cpp
+)
+
+target_link_libraries(${PROJECT_NAME}_demo PRIVATE ${PROJECT_NAME}_lib)
+
+set_target_properties(${PROJECT_NAME}_demo PROPERTIES
+	OUTPUT_NAME ${PROJECT_NAME}
+	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)

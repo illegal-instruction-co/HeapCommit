@@ -1,0 +1,4 @@
+C:/Users/mbk/Desktop/heapcommit/build/CMakeFiles/heapcommit_lib.dir
+C:/Users/mbk/Desktop/heapcommit/build/CMakeFiles/heapcommit_demo.dir
+C:/Users/mbk/Desktop/heapcommit/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/mbk/Desktop/heapcommit/build/CMakeFiles/ZERO_CHECK.dir
